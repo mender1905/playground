@@ -3,116 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mina Smarta Agenter</title>
+  <title>Västerort Smarta Agenter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-green: #10b981;
+      --primary-green-dark: #059669;
+      --accent-blue: #0284c7;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --bg-dark: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f4f7f6;
-      margin: 0;
-      padding: 20px;
-      color: #2c3e50;
-    }
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-      background: #ffffff;
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    h1 {
-      font-size: 22px;
-      margin-top: 0;
-      color: #1a252f;
-      text-align: center;
-    }
-    p {
-      font-size: 14px;
-      color: #7f8c8d;
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .agent-card {
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.15) 0px, transparent 50%);
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      justify-content: center;
+      padding: 20px 16px;
+      color: var(--text-main);
     }
-    .agent-card:hover {
-      border-color: #27ae60;
-    }
-    .agent-card input {
-      margin-right: 12px;
-      transform: scale(1.2);
-    }
-    .agent-title {
-      font-weight: bold;
-      font-size: 15px;
-      display: block;
-    }
-    .agent-desc {
-      font-size: 12px;
-      color: #95a5a6;
-    }
-    input[type="email"] {
-      width: 100%;
-      padding: 12px;
-      margin: 16px 0;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 14px;
-    }
-    button {
-      width: 100%;
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #219150;
-    }
+
+    .wrapper { width: 100%; max-width: 500px; }
+    .card { background: #ffffff; border-radius: 28px; padding: 32px 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); }
+    
+    .header { text-align: center; margin-bottom: 24px; }
+    .badge-top { display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; color: #334155; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; }
+    .badge-top span { width: 8px; height: 8px; border-radius: 50%; background-color: var(--primary-green); }
+    h1 { font-size: 26px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+    p.subtitle { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+    /* AGENT KORT */
+    .agent-card { background: #ffffff; border: 2px solid #e2e8f0; border-radius: 20px; overflow: hidden; margin-bottom: 20px; transition: all 0.25s ease; }
+    .agent-header { padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #f8fafc; }
+    .agent-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    
+    .agent-content { padding: 16px; display: none; border-top: 1px solid #e2e8f0; }
+    .agent-card.active .agent-content { display: block; }
+    .agent-card.active { border-color: var(--primary-green); }
+    .agent-card.active-hus { border-color: var(--accent-blue); }
+
+    /* KAMERA-KNAPP FÖR MAT */
+    .camera-box { background: #ecfdf5; border: 2px dashed #10b981; border-radius: 16px; padding: 20px; text-align: center; margin-top: 12px; cursor: pointer; }
+    .camera-box:hover { background: #d1fae5; }
+    .camera-icon { font-size: 32px; margin-bottom: 6px; }
+    .camera-text { font-size: 13px; font-weight: 700; color: #047857; }
+    .camera-sub { font-size: 11px; color: #065f46; margin-top: 4px; }
+    #fridge-photo { display: none; }
+
+    /* HUS OBJEKT LISTA */
+    .house-item { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+    .house-address { font-weight: 800; font-size: 14px; color: #0369a1; }
+    .house-details { font-size: 12px; color: #0284c7; margin: 4px 0 8px 0; }
+    .broker-btn { display: inline-block; background: #0284c7; color: white; text-decoration: none; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 6px; }
+
+    /* INPUT & SUBMIT */
+    .input-group { margin-top: 20px; margin-bottom: 16px; }
+    .input-label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px; }
+    .input-field { width: 100%; padding: 16px; font-size: 15px; border: 2px solid #e2e8f0; border-radius: 14px; background-color: #f8fafc; outline: none; }
+    .btn-submit { width: 100%; padding: 18px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: none; border-radius: 14px; font-size: 16px; font-weight: 800; cursor: pointer; }
+
+    #status { margin-top: 14px; text-align: center; font-size: 14px; font-weight: 700; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>🤖 Smarta Agent-Tjänster</h1>
-  <p>Välj vilka uppdateringar du vill få direkt till din e-post varje vecka.</p>
-
-  <!-- Byt ut action-länken mot din Formspree-länk -->
-  <form action="https://formspree.io/f/DIN_FORMSPREE_ID" method="POST">
+<div class="wrapper">
+  <div class="card">
     
-    <label class="agent-card">
-      <input type="checkbox" name="agent_mat" value="Ja" checked>
-      <div>
-        <span class="agent-title">🥦 Mat-Agenten (Stora Coop Vinsta)</span>
-        <span class="agent-desc">Veckans middagsmeny, REA-klipp och färdig inköpslista.</span>
-      </div>
-    </label>
+    <div class="header">
+      <div class="badge-top"><span></span> Västerort Smart Hub</div>
+      <h1>Dina Smarta Agenter</h1>
+      <p class="subtitle">Tryck på en agent för att använda funktionerna eller starta prenumerationen.</p>
+    </div>
 
-    <label class="agent-card">
-      <input type="checkbox" name="agent_hus" value="Ja">
-      <div>
+    <!-- MAT AGENT -->
+    <div class="agent-card active" id="card_mat">
+      <div class="agent-header" onclick="toggleCard('mat')">
+        <span class="agent-title">🥦 Mat-Agenten (Coop Vinsta)</span>
+        <span style="font-size:12px; font-weight:700; color:#10b981;">Aktiv ▼</span>
+      </div>
+      <div class="agent-content">
+        <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Skapar veckomeny och sorterad inköpslista utifrån Coop Vinstas REA-priser.</p>
+        
+        <!-- KAMERA FUNKTION -->
+        <label for="fridge-photo" class="camera-box">
+          <div class="camera-icon">📸</div>
+          <div class="camera-text">Ta bild på Kyl & Frys</div>
+          <div class="camera-sub">AI-agenten ser vad du har hemma och ger recept!</div>
+          <input type="file" id="fridge-photo" accept="image/*" capture="environment" onchange="photoTaken(event)">
+        </label>
+        <div id="photo-status" style="font-size:12px; color:#059669; font-weight:700; text-align:center; margin-top:6px;"></div>
+      </div>
+    </div>
+
+    <!-- HUS AGENT -->
+    <div class="agent-card" id="card_hus">
+      <div class="agent-header" onclick="toggleCard('hus')">
         <span class="agent-title">🏡 Hus-Agenten (Västerort)</span>
-        <span class="agent-desc">Bevakning av hus och bostadsmarknaden i Västerort.</span>
+        <span style="font-size:12px; font-weight:700; color:#0284c7;">Visa Objekt ▼</span>
       </div>
-    </label>
+      <div class="agent-content">
+        <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Agentens utvalda villor och bostäder i Hässelby, Vällingby & Spånga denna vecka:</p>
+        
+        <!-- EXEMPEL PÅ HUSOBJEKT MED MÄKLARLÄNKAR -->
+        <div class="house-item">
+          <div class="house-address">📍 Villavägen 12, Hässelby Villastad</div>
+          <div class="house-details">152 m² • 6 rum • Utgångspris: 6 495 000 kr</div>
+          <a href="https://www.svenskfast.se" target="_blank" class="broker-btn">Visa hos Svensk Fastighetsförmedling ↗</a>
+        </div>
 
-    <input type="email" name="email" placeholder="Fyll i din e-postadress (t.ex. Outlook)" required>
+        <div class="house-item">
+          <div class="house-address">📍 Spånga Kyrkväg 88, Spånga</div>
+          <div class="house-details">138 m² • 5 rum • Utgångspris: 5 850 000 kr</div>
+          <a href="https://www.fastighetsbyran.com" target="_blank" class="broker-btn">Visa hos Fastighetsbyrån ↗</a>
+        </div>
+      </div>
+    </div>
 
-    <button type="submit">Starta prenumeration 🚀</button>
-  </form>
+    <!-- FORMULÄR -->
+    <form id="subscribeForm">
+      <div class="input-group">
+        <label class="input-label" for="email">E-post för veckorapporter</label>
+        <input type="email" id="email" class="input-field" placeholder="namn@outlook.com" required>
+      </div>
+      <button type="submit" class="btn-submit">Spara min prenumeration 🚀</button>
+    </form>
+
+    <div id="status"></div>
+
+  </div>
 </div>
+
+<script>
+  function toggleCard(type) {
+    const card = document.getElementById('card_' + type);
+    card.classList.toggle('active');
+    if(type === 'hus') card.classList.toggle('active-hus');
+  }
+
+  function photoTaken(event) {
+    const file = event.target.files[0];
+    const status = document.getElementById('photo-status');
+    if (file) {
+      status.innerText = "📸 Bild tagen! Analyserar råvaror...";
+    }
+  }
+</script>
 
 </body>
 </html>
