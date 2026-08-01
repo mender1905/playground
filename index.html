@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Västerort AI – Bygg din Agent</title>
+  <title>Västerort AI – Prompta din Agent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
       color: var(--text-main);
     }
 
-    .wrapper { width: 100%; max-width: 540px; }
+    .wrapper { width: 100%; max-width: 560px; }
 
     .card { 
       background: #ffffff; 
@@ -49,12 +49,12 @@
       background: #e2e8f0;
       height: 6px;
       border-radius: 100px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       overflow: hidden;
     }
     .progress-bar {
       height: 100%;
-      width: 33%;
+      width: 25%;
       background: linear-gradient(90deg, var(--accent-purple), var(--primary-green));
       transition: width 0.3s ease;
     }
@@ -68,9 +68,34 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .step-number { font-size: 12px; font-weight: 800; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    h2 { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.5px; }
-    p.step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
+    .step-number { font-size: 11px; font-weight: 800; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    h2 { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.25; }
+    p.step-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+
+    /* STORY BOX */
+    .story-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--accent-purple);
+      border-radius: 0 16px 16px 0;
+      padding: 16px 18px;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .control-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
 
     /* VÄLJ AGENT-KNAPPAR */
     .agent-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
@@ -116,6 +141,34 @@
       font-family: inherit;
     }
 
+    /* PROMPT PREVIEW BOX */
+    .prompt-box {
+      background: #0f172a;
+      color: #38bdf8;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 16px;
+      border-radius: 16px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      border: 1px solid #1e293b;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .btn-copy {
+      background: #334155;
+      color: #ffffff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
     /* FREKVENS */
     .freq-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .freq-btn {
@@ -146,6 +199,13 @@
       width: 85px;
     }
 
+    .privacy-text {
+      font-size: 11px;
+      color: #94a3b8;
+      text-align: center;
+      margin-top: 8px;
+    }
+
     #success-screen { text-align: center; display: none; }
     .success-icon { font-size: 48px; margin-bottom: 12px; }
   </style>
@@ -162,40 +222,61 @@
 
     <form id="wizardForm" onsubmit="finishWizard(event)">
 
-      <!-- STEG 1: VÄLJ AGENT -->
+      <!-- STEG 1: VÄLKOMMEN & BAKGRUND -->
       <div class="step-content active" id="step-1">
-        <div class="step-number">Steg 1 av 3</div>
-        <h2>Välj dina AI-Agenter</h2>
-        <p class="step-desc">Minska din mentala belastning. Vilka uppgifter vill du att agenterna sköter åt dig i bakgrunden?</p>
+        <div class="step-number">Steg 1 av 4 – Filosofin</div>
+        <h2>Skapa din egen autonoma agent</h2>
+        
+        <div class="story-box">
+          <strong>Hur idén föddes:</strong><br>
+          Vi tröttnade på den mentala tröttheten i vardagen – att ständigt behöva planera matlådor, jaga rabatter på Stora Coop Vinsta, komma ihåg kräftskivan i tid eller bevaka slutpriser och barnfamiljer i Västerort.<br><br>
+          Istället för en färdig mall svarar du på några frågor och <strong>promptar fram din helt egna AI-agent</strong> som sköter tänkandet åt dig.
+        </div>
+
+        <div class="control-badge">
+          🛡️ Du äger prompten och har 100% kontroll
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-next" onclick="nextStep(2)">Börja prompta din agent ➔</button>
+        </div>
+      </div>
+
+      <!-- STEG 2: VÄLJ UPPGIFTER -->
+      <div class="step-content" id="step-2">
+        <div class="step-number">Steg 2 av 4 – Agentens roll</div>
+        <h2>Vilka områden ska agenten täcka?</h2>
+        <p class="step-desc">Välj vad din personliga agent ska bli expert på.</p>
         
         <div class="agent-selector">
           <div class="select-card selected-green" id="btn-mat" onclick="toggleAgent('mat')">
             <div class="select-icon">🥦</div>
-            <div class="select-title">Mat-Agenten</div>
+            <div class="select-title">Mat & Vardag</div>
             <div style="font-size:11px; color:#64748b; margin-top:2px;">Recept, Butik & Säsong</div>
           </div>
           <div class="select-card selected-blue" id="btn-hus" onclick="toggleAgent('hus')">
             <div class="select-icon">🏡</div>
-            <div class="select-title">Hus-Agenten</div>
+            <div class="select-title">Hus & Boende</div>
             <div style="font-size:11px; color:#64748b; margin-top:2px;">Slutpriser & Grannskap</div>
           </div>
         </div>
 
         <div class="btn-group">
-          <button type="button" class="btn btn-next" onclick="nextStep(2)">Forma din agent ➔</button>
+          <button type="button" class="btn btn-back" onclick="nextStep(1)">◀ Bakåt</button>
+          <button type="button" class="btn btn-next" onclick="nextStep(3)">Formulera regler ➔</button>
         </div>
       </div>
 
-      <!-- STEG 2: ANPASSA PREFERENSER -->
-      <div class="step-content" id="step-2">
-        <div class="step-number">Steg 2 av 3</div>
-        <h2>Anpassa dina instruktioner</h2>
-        <p class="step-desc">Tala om vad du vill att agenten analyserar och bevakar.</p>
+      <!-- STEG 3: STÄLL IN INSTRUKTIONER -->
+      <div class="step-content" id="step-3">
+        <div class="step-number">Steg 3 av 4 – Inställningar</div>
+        <h2>Ge dina unika instruktioner</h2>
+        <p class="step-desc">Varje val du gör ställer in parametrar i agentens hjärna.</p>
 
         <!-- MAT PREFERENSER -->
         <div id="pref-mat">
-          <label class="field-label">🥦 Favoritbutik i Västerort</label>
-          <select>
+          <label class="field-label">🥦 Favoritbutik</label>
+          <select id="select-butik" onchange="updatePromptPreview()">
             <option>Stora Coop Vinsta</option>
             <option>ICA Kvantum Flygstaden</option>
             <option>Lidl Vällingby</option>
@@ -203,63 +284,65 @@
           </select>
 
           <label class="field-label">Vad ska agenten planera?</label>
-          <div class="chip-group">
+          <div class="chip-group" id="chips-mat-plan">
             <div class="chip active" onclick="toggleChip(this)">Middagar</div>
             <div class="chip active" onclick="toggleChip(this)">Matlåda till jobbet</div>
-            <div class="chip" onclick="toggleChip(this)">Efterrätter & Säsongstips</div>
+            <div class="chip" onclick="toggleChip(this)">Enkla efterrätter & Pajer</div>
+          </div>
+
+          <label class="field-label">🔔 Högtids- & Säsongspåminnelser</label>
+          <div class="chip-group" id="chips-mat-season">
+            <div class="chip active" onclick="toggleChip(this)">Svenska högtider (Kräftor, Midsommar)</div>
+            <div class="chip active" onclick="toggleChip(this)">Bär- & Svampsäsong</div>
           </div>
         </div>
 
         <!-- HUS PREFERENSER -->
         <div id="pref-hus" style="margin-top:14px;">
           <label class="field-label">🏡 Områden i Västerort</label>
-          <div class="chip-group">
+          <div class="chip-group" id="chips-hus-area">
             <div class="chip active" onclick="toggleChip(this)">Hässelby Villastad</div>
             <div class="chip active" onclick="toggleChip(this)">Spånga</div>
             <div class="chip" onclick="toggleChip(this)">Vällingby</div>
           </div>
 
-          <label class="field-label">Vilken historik & data vill du se?</label>
-          <div class="chip-group">
-            <div class="chip active" onclick="toggleChip(this)">Slutpriser i närheten</div>
-            <div class="chip active" onclick="toggleChip(this)">Husens ålder & Byggår</div>
-            <div class="chip" onclick="toggleChip(this)">Prisutveckling (% sen köp)</div>
-          </div>
-
-          <label class="field-label">👨‍👩‍👧‍👦 Grannskap & Livskvalitet (Etisk data)</label>
-          <div class="chip-group">
+          <label class="field-label">👨‍👩‍👧‍👦 Grannskapsdata & Historia (Etisk data)</label>
+          <div class="chip-group" id="chips-hus-data">
+            <div class="chip active" onclick="toggleChip(this)">Slutpriser & Byggår</div>
             <div class="chip active" onclick="toggleChip(this)">Andel barnfamiljer i området</div>
-            <div class="chip active" onclick="toggleChip(this)">Närhet till lekplatser & förskolor</div>
-            <div class="chip" onclick="toggleChip(this)">Trygga gångvägar till skolan</div>
+            <div class="chip" onclick="toggleChip(this)">Närhet till lekplatser</div>
           </div>
         </div>
 
-        <!-- NAVIGATION MED BACK-KNAPP -->
         <div class="btn-group">
-          <button type="button" class="btn btn-back" onclick="nextStep(1)">◀ Bakåt</button>
-          <button type="button" class="btn btn-next" onclick="nextStep(3)">Sista steget ➔</button>
+          <button type="button" class="btn btn-back" onclick="nextStep(2)">◀ Bakåt</button>
+          <button type="button" class="btn btn-next" onclick="nextStep(4)">Se genererad prompt ➔</button>
         </div>
       </div>
 
-      <!-- STEG 3: FREKVENS & EMAIL -->
-      <div class="step-content" id="step-3">
-        <div class="step-number">Steg 3 av 3</div>
-        <h2>Hur ofta ska agenten rapportera?</h2>
-        <p class="step-desc">Ange e-post och hur ofta du vill få dina sammanställda rapporter.</p>
+      <!-- STEG 4: GRANSKA PROMPT & AKTIVERA -->
+      <div class="step-content" id="step-4">
+        <div class="step-number">Steg 4 av 4 – Granska din Prompt</div>
+        <h2>Din skräddarsydda Agent-Prompt</h2>
+        <p class="step-desc">Här är instruktionen som du precis har byggt till din agent:</p>
 
-        <label class="field-label">Stödschema</label>
+        <!-- GENERERAD PROMPT -->
+        <div class="prompt-box" id="prompt-preview">Loading prompt...</div>
+        <button type="button" class="btn-copy" onclick="copyPrompt()">📋 Kopiera Prompt</button>
+
+        <label class="field-label">Hur ofta ska agenten köra denna prompt?</label>
         <div class="freq-box">
           <div class="freq-btn active" onclick="setFreq(this)">1 ggr/vecka<br><span style="font-weight:400; font-size:10px;">(Söndag)</span></div>
           <div class="freq-btn" onclick="setFreq(this)">2 ggr/vecka<br><span style="font-weight:400; font-size:10px;">(Mån/Tor)</span></div>
           <div class="freq-btn" onclick="setFreq(this)">3 ggr/vecka<br><span style="font-weight:400; font-size:10px;">(Aktiv)</span></div>
         </div>
 
-        <label class="field-label">Vart ska agenten leverera rapporterna?</label>
+        <label class="field-label">Din e-postadress</label>
         <input type="email" placeholder="namn@gmail.com" required>
+        <div class="privacy-text">🔒 100% spamsäkert. Din e-post delas aldrig med tredje part.</div>
 
-        <!-- NAVIGATION MED BACK-KNAPP -->
         <div class="btn-group">
-          <button type="button" class="btn btn-back" onclick="nextStep(2)">◀ Bakåt</button>
+          <button type="button" class="btn btn-back" onclick="nextStep(3)">◀ Bakåt</button>
           <button type="submit" class="btn btn-next" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Starta Agenten 🚀</button>
         </div>
       </div>
@@ -268,12 +351,12 @@
 
     <!-- SLUTSKÄRM -->
     <div id="success-screen">
-      <div class="success-icon">✨</div>
-      <h2>Din agent är redo!</h2>
+      <div class="success-icon">🤖</div>
+      <h2>Din agent är nu aktiverad!</h2>
       <p class="step-desc" style="margin-bottom: 20px;">
-        Agenten har sparat dina preferenser. Den kommer nu hålla koll på slutpriser, husålder och barnfamiljstäthet i ditt valt område.
+        Snyggt jobbat! Du har promptat din agent. Den kör nu autonomt i bakgrunden utifrån dina exakta instruktioner.
       </p>
-      <button class="btn btn-next" onclick="location.reload()">Ändra mina inställningar</button>
+      <button class="btn btn-next" onclick="location.reload()">Bygg en ny agent</button>
     </div>
 
   </div>
@@ -293,10 +376,12 @@
       document.getElementById('btn-hus').classList.toggle('selected-blue', activeHus);
       document.getElementById('pref-hus').style.display = activeHus ? 'block' : 'none';
     }
+    updatePromptPreview();
   }
 
   function toggleChip(el) {
     el.classList.toggle('active');
+    updatePromptPreview();
   }
 
   function setFreq(el) {
@@ -304,12 +389,52 @@
     el.classList.add('active');
   }
 
+  function getActiveChipsText(containerId) {
+    const activeElems = document.querySelectorAll(`#${containerId} .chip.active`);
+    return Array.from(activeElems).map(e => e.innerText).join(', ');
+  }
+
+  function updatePromptPreview() {
+    const butik = document.getElementById('select-butik').value;
+    let promptText = `SYSTEM PROMPT: Västerort Agent v1.0\n------------------------------------\n`;
+    promptText += `Du är min personliga vardagsagent.\n\n`;
+
+    if (activeMat) {
+      const matPlan = getActiveChipsText('chips-mat-plan');
+      const matSeason = getActiveChipsText('chips-mat-season');
+      promptText += `[MAT & VARDAG]\n`;
+      promptText += `- Butik: ${butik}\n`;
+      if (matPlan) promptText += `- Planera: ${matPlan}\n`;
+      if (matSeason) promptText += `- Bevaka & Påminn: ${matSeason}\n`;
+      promptText += `\n`;
+    }
+
+    if (activeHus) {
+      const husArea = getActiveChipsText('chips-hus-area');
+      const husData = getActiveChipsText('chips-hus-data');
+      promptText += `[BOSTAD & GRANNNSKAP]\n`;
+      if (husArea) promptText += `- Områden: ${husArea}\n`;
+      if (husData) promptText += `- Analysera data: ${husData}\n`;
+    }
+
+    document.getElementById('prompt-preview').innerText = promptText;
+  }
+
+  function copyPrompt() {
+    const text = document.getElementById('prompt-preview').innerText;
+    navigator.clipboard.writeText(text);
+    alert('Prompten har kopierats till urklipp!');
+  }
+
   function nextStep(step) {
     document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
     document.getElementById('step-' + step).classList.add('active');
     
-    // Uppdatera Progress Bar
-    const progress = (step / 3) * 100;
+    if (step === 4) {
+      updatePromptPreview();
+    }
+
+    const progress = (step / 4) * 100;
     document.getElementById('progress-bar').style.width = progress + '%';
   }
 
@@ -319,6 +444,9 @@
     document.getElementById('progress-box').style.display = 'none';
     document.getElementById('success-screen').style.display = 'block';
   }
+
+  // Initialisera vid start
+  updatePromptPreview();
 </script>
 
 </body>
