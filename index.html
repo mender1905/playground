@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Västerort AI – Mental avlastning i vardagen</title>
+  <title>Västerort AI – Bygg din Agent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-green: #10b981;
-      --primary-dark: #059669;
       --accent-blue: #0284c7;
       --accent-purple: #8b5cf6;
       --text-main: #0f172a;
@@ -30,85 +29,75 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 32px 16px;
+      padding: 24px 16px;
       color: var(--text-main);
     }
 
-    .wrapper { width: 100%; max-width: 580px; }
+    .wrapper { width: 100%; max-width: 540px; }
 
     .card { 
       background: #ffffff; 
       border-radius: 32px; 
-      padding: 40px 32px; 
+      padding: 36px 28px; 
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+      position: relative;
     }
 
-    /* HERO INTRO: AGENTISK FRAMTID */
-    .header { text-align: center; margin-bottom: 32px; }
-    .badge-future { 
-      display: inline-flex; 
-      align-items: center; 
-      gap: 8px; 
-      background: #f3e8ff; 
-      color: #6b21a8; 
-      padding: 6px 16px; 
-      border-radius: 100px; 
-      font-size: 11px; 
-      font-weight: 800; 
-      text-transform: uppercase; 
-      letter-spacing: 0.5px;
-      margin-bottom: 16px; 
-    }
-    .badge-future span { width: 8px; height: 8px; border-radius: 50%; background-color: var(--accent-purple); }
-
-    h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin-bottom: 14px; letter-spacing: -0.5px; line-height: 1.2; }
-    p.hero-text { font-size: 15px; color: var(--text-muted); line-height: 1.6; text-align: center; margin-bottom: 20px; }
-
-    /* MENTAL AVLASTNING HIGHLIGHT */
-    .mind-quote {
-      background: #f8fafc;
-      border-left: 4px solid var(--accent-purple);
-      border-radius: 0 16px 16px 0;
-      padding: 14px 18px;
-      font-size: 13px;
-      color: #475569;
-      font-style: italic;
-      line-height: 1.5;
+    /* PROGRESS BAR */
+    .progress-container {
+      width: 100%;
+      background: #e2e8f0;
+      height: 6px;
+      border-radius: 100px;
       margin-bottom: 28px;
+      overflow: hidden;
     }
+    .progress-bar {
+      height: 100%;
+      width: 33%;
+      background: linear-gradient(90deg, var(--accent-purple), var(--primary-green));
+      transition: width 0.3s ease;
+    }
+
+    /* STEG INNEHÅLL */
+    .step-content { display: none; }
+    .step-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-number { font-size: 12px; font-weight: 800; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    h2 { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.5px; }
+    p.step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
 
     /* VÄLJ AGENT-KNAPPAR */
-    .agent-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .agent-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
     .select-card {
       border: 2px solid #e2e8f0;
       border-radius: 20px;
-      padding: 18px 14px;
+      padding: 16px 12px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.25s;
-      background: #ffffff;
+      transition: all 0.2s;
     }
-    .select-card:hover { border-color: var(--primary-green); transform: translateY(-2px); }
-    .select-card.selected-green { border-color: var(--primary-green); background: #ecfdf5; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15); }
-    .select-card.selected-blue { border-color: var(--accent-blue); background: #f0f9ff; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15); }
-    .select-icon { font-size: 32px; margin-bottom: 6px; }
-    .select-title { font-weight: 800; font-size: 15px; color: var(--text-main); }
-    .select-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .select-card.selected-green { border-color: var(--primary-green); background: #ecfdf5; }
+    .select-card.selected-blue { border-color: var(--accent-blue); background: #f0f9ff; }
+    .select-icon { font-size: 28px; margin-bottom: 4px; }
+    .select-title { font-weight: 800; font-size: 14px; }
 
-    /* SEKTIONER OCH KOMPONENTER */
-    .section-title { font-size: 16px; font-weight: 800; color: #1e293b; margin: 24px 0 12px 0; display: flex; align-items: center; gap: 8px; }
-    .step-box { background: #f8fafc; border-radius: 24px; padding: 22px; border: 1px solid #e2e8f0; margin-bottom: 20px; }
-
-    label.field-label { display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; margin-top: 16px; }
+    /* FORM ELEMENT */
+    label.field-label { display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 14px; }
     label.field-label:first-child { margin-top: 0; }
 
-    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
     .chip {
-      background: #ffffff;
+      background: #f8fafc;
       border: 1px solid #cbd5e1;
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 100px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       user-select: none;
@@ -118,7 +107,7 @@
 
     select, input[type="email"] {
       width: 100%;
-      padding: 14px 16px;
+      padding: 12px 14px;
       font-size: 14px;
       border: 1px solid #cbd5e1;
       border-radius: 12px;
@@ -127,31 +116,38 @@
       font-family: inherit;
     }
 
-    /* FREKVENS VÄLJARE */
+    /* FREKVENS */
     .freq-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .freq-btn {
-      background: #ffffff; border: 1px solid #cbd5e1; padding: 12px 8px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+      background: #f8fafc; border: 1px solid #cbd5e1; padding: 10px 4px; border-radius: 12px; text-align: center; font-size: 11px; font-weight: 700; cursor: pointer;
     }
-    .freq-btn.active { background: var(--accent-purple); color: white; border-color: var(--accent-purple); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
+    .freq-btn.active { background: var(--accent-purple); color: white; border-color: var(--accent-purple); }
 
-    /* SUBMIT BUTTON */
-    .btn-submit { 
-      width: 100%; 
-      padding: 18px; 
-      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); 
-      color: #ffffff; 
-      border: none; 
-      border-radius: 14px; 
-      font-size: 16px; 
-      font-weight: 800; 
-      cursor: pointer; 
-      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
-      margin-top: 12px;
-      transition: transform 0.2s;
+    /* KNAPPAR NAVIGERING */
+    .btn-group { display: flex; gap: 10px; margin-top: 24px; }
+    .btn {
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
     }
-    .btn-submit:hover { transform: translateY(-1px); }
+    .btn-next {
+      flex: 1;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+      color: white;
+      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+    }
+    .btn-back {
+      background: #f1f5f9;
+      color: #475569;
+      width: 85px;
+    }
 
-    #status { margin-top: 18px; text-align: center; font-size: 14px; font-weight: 700; color: #047857; }
+    #success-screen { text-align: center; display: none; }
+    .success-icon { font-size: 48px; margin-bottom: 12px; }
   </style>
 </head>
 <body>
@@ -159,140 +155,143 @@
 <div class="wrapper">
   <div class="card">
     
-    <!-- INTRO HEADER -->
-    <div class="header">
-      <div class="badge-future"><span></span> Framtidens Agentiska Stöd</div>
-      <h1>Minska den mentala belastningen i vardagen</h1>
-      <p class="hero-text">
-        Sluta hålla allt i huvudet. Våra autonoma AI-agenter tar över det ständiga tänkandet kring matpriser, måltidsplanering och bostadsbevakning – och stöttar dig tyst i bakgrunden.
-      </p>
+    <!-- PROGRESS BAR -->
+    <div class="progress-container" id="progress-box">
+      <div class="progress-bar" id="progress-bar"></div>
     </div>
 
-    <!-- CITAT / MENTAL AVLASTNING -->
-    <div class="mind-quote">
-      "Låt din personliga agent göra grovjobbet, påminna dig i rätt tid och leverera färdiga beslut directly till din inkorg."
-    </div>
+    <form id="wizardForm" onsubmit="finishWizard(event)">
 
-    <!-- STEG 1: VÄLJ AGENT -->
-    <label class="field-label" style="text-align:center; margin-bottom:12px;">1. Vilka områden vill du lämna över till en AI-agent?</label>
-    <div class="agent-selector">
-      <div class="select-card selected-green" id="btn-mat" onclick="toggleAgent('mat')">
-        <div class="select-icon">🥦</div>
-        <div class="select-title">Mat-Agenten</div>
-        <div class="select-sub">Veckomeny, Coop Vinsta & Inköpslistor</div>
-      </div>
-      <div class="select-card" id="btn-hus" onclick="toggleAgent('hus')">
-        <div class="select-icon">🏡</div>
-        <div class="select-title">Hus-Agenten</div>
-        <div class="select-sub">Bostadskoll & Mäklarlänkar i Västerort</div>
-      </div>
-    </div>
-
-    <form id="agentForm" onsubmit="handleForm(event)">
-
-      <!-- MAT AGENT PREFERENSER -->
-      <div id="section-mat" class="step-box">
-        <div class="section-title">🥦 Konfigurera Mat-Agenten</div>
+      <!-- STEG 1: VÄLJ AGENT -->
+      <div class="step-content active" id="step-1">
+        <div class="step-number">Steg 1 av 3</div>
+        <h2>Välj dina AI-Agenter</h2>
+        <p class="step-desc">Minska din mentala belastning. Vilka uppgifter vill du att agenterna sköter åt dig i bakgrunden?</p>
         
-        <label class="field-label">Vad vill du att agenten ska tänka ut åt dig?</label>
-        <div class="chip-group">
-          <div class="chip active" onclick="toggleChip(this)">Middagar</div>
-          <div class="chip" onclick="toggleChip(this)">Luncher</div>
-          <div class="chip" onclick="toggleChip(this)">Frukost</div>
-          <div class="chip" onclick="toggleChip(this)">Efterrätt / Helglyx</div>
+        <div class="agent-selector">
+          <div class="select-card selected-green" id="btn-mat" onclick="toggleAgent('mat')">
+            <div class="select-icon">🥦</div>
+            <div class="select-title">Mat-Agenten</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">Recept, Butik & Säsong</div>
+          </div>
+          <div class="select-card selected-blue" id="btn-hus" onclick="toggleAgent('hus')">
+            <div class="select-icon">🏡</div>
+            <div class="select-title">Hus-Agenten</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">Slutpriser & Grannskap</div>
+          </div>
         </div>
 
-        <label class="field-label">Hur många personer stöttar agenten?</label>
-        <select>
-          <option>1 person (Singel)</option>
-          <option selected>2 personer (Par)</option>
-          <option>3–4 personer (Familj)</option>
-          <option>5+ personer (Storhushåll)</option>
-        </select>
-
-        <label class="field-label">Kostpreferenser & Allergier</label>
-        <div class="chip-group">
-          <div class="chip active" onclick="toggleChip(this)">Blandat (Kött/Fisk/Veg)</div>
-          <div class="chip" onclick="toggleChip(this)">Vegetariskt</div>
-          <div class="chip" onclick="toggleChip(this)">Veganskt</div>
-          <div class="chip" onclick="toggleChip(this)">Glutenfritt</div>
-          <div class="chip" onclick="toggleChip(this)">Laktosfritt</div>
-          <div class="chip" onclick="toggleChip(this)">Barnvänligt</div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-next" onclick="nextStep(2)">Forma din agent ➔</button>
         </div>
       </div>
 
-      <!-- HUS AGENT PREFERENSER -->
-      <div id="section-hus" class="step-box" style="display:none;">
-        <div class="section-title">🏡 Konfigurera Hus-Agenten</div>
+      <!-- STEG 2: ANPASSA PREFERENSER -->
+      <div class="step-content" id="step-2">
+        <div class="step-number">Steg 2 av 3</div>
+        <h2>Anpassa dina instruktioner</h2>
+        <p class="step-desc">Tala om vad du vill att agenten analyserar och bevakar.</p>
 
-        <label class="field-label">Vilka områden ska agenten hålla koll på?</label>
-        <div class="chip-group">
-          <div class="chip active" onclick="toggleChip(this)">Hässelby Villastad</div>
-          <div class="chip active" onclick="toggleChip(this)">Spånga</div>
-          <div class="chip" onclick="toggleChip(this)">Vällingby</div>
-          <div class="chip" onclick="toggleChip(this)">Hässelby Strand</div>
+        <!-- MAT PREFERENSER -->
+        <div id="pref-mat">
+          <label class="field-label">🥦 Favoritbutik i Västerort</label>
+          <select>
+            <option>Stora Coop Vinsta</option>
+            <option>ICA Kvantum Flygstaden</option>
+            <option>Lidl Vällingby</option>
+            <option>ICA Nära Spånga</option>
+          </select>
+
+          <label class="field-label">Vad ska agenten planera?</label>
+          <div class="chip-group">
+            <div class="chip active" onclick="toggleChip(this)">Middagar</div>
+            <div class="chip active" onclick="toggleChip(this)">Matlåda till jobbet</div>
+            <div class="chip" onclick="toggleChip(this)">Efterrätter & Säsongstips</div>
+          </div>
         </div>
 
-        <label class="field-label">Bostadstyp</label>
-        <div class="chip-group">
-          <div class="chip active" onclick="toggleChip(this)">Villa</div>
-          <div class="chip active" onclick="toggleChip(this)">Radhus / Kedjehus</div>
-          <div class="chip" onclick="toggleChip(this)">Lägenhet</div>
+        <!-- HUS PREFERENSER -->
+        <div id="pref-hus" style="margin-top:14px;">
+          <label class="field-label">🏡 Områden i Västerort</label>
+          <div class="chip-group">
+            <div class="chip active" onclick="toggleChip(this)">Hässelby Villastad</div>
+            <div class="chip active" onclick="toggleChip(this)">Spånga</div>
+            <div class="chip" onclick="toggleChip(this)">Vällingby</div>
+          </div>
+
+          <label class="field-label">Vilken historik & data vill du se?</label>
+          <div class="chip-group">
+            <div class="chip active" onclick="toggleChip(this)">Slutpriser i närheten</div>
+            <div class="chip active" onclick="toggleChip(this)">Husens ålder & Byggår</div>
+            <div class="chip" onclick="toggleChip(this)">Prisutveckling (% sen köp)</div>
+          </div>
+
+          <label class="field-label">👨‍👩‍👧‍👦 Grannskap & Livskvalitet (Etisk data)</label>
+          <div class="chip-group">
+            <div class="chip active" onclick="toggleChip(this)">Andel barnfamiljer i området</div>
+            <div class="chip active" onclick="toggleChip(this)">Närhet till lekplatser & förskolor</div>
+            <div class="chip" onclick="toggleChip(this)">Trygga gångvägar till skolan</div>
+          </div>
         </div>
 
-        <label class="field-label">Max pristak</label>
-        <select>
-          <option>Upp till 5,0 Mkr</option>
-          <option selected>Upp till 7,5 Mkr</option>
-          <option>Upp till 10,0 Mkr</option>
-          <option>Ingen övre gräns</option>
-        </select>
-
-        <label class="field-label">Vad söker ni för livskvalitet?</label>
-        <div class="chip-group">
-          <div class="chip active" onclick="toggleChip(this)">Nära skola/förskola</div>
-          <div class="chip" onclick="toggleChip(this)">Nära park & grönområde</div>
-          <div class="chip" onclick="toggleChip(this)">Renoverat skick</div>
-          <div class="chip" onclick="toggleChip(this)">Nära Mälaren</div>
+        <!-- NAVIGATION MED BACK-KNAPP -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-back" onclick="nextStep(1)">◀ Bakåt</button>
+          <button type="button" class="btn btn-next" onclick="nextStep(3)">Sista steget ➔</button>
         </div>
       </div>
 
-      <!-- FREKVENS & E-POST -->
-      <div class="step-box">
-        <div class="section-title">🔮 Agentens Stödschema</div>
-        
-        <label class="field-label">Hur ofta vill du bli påmind/uppdaterad?</label>
+      <!-- STEG 3: FREKVENS & EMAIL -->
+      <div class="step-content" id="step-3">
+        <div class="step-number">Steg 3 av 3</div>
+        <h2>Hur ofta ska agenten rapportera?</h2>
+        <p class="step-desc">Ange e-post och hur ofta du vill få dina sammanställda rapporter.</p>
+
+        <label class="field-label">Stödschema</label>
         <div class="freq-box">
-          <div class="freq-btn active" onclick="setFreq(this)">1 ggr / vecka<br><span style="font-weight:400; font-size:10px;">(Söndagspepp)</span></div>
-          <div class="freq-btn" onclick="setFreq(this)">2 ggr / vecka<br><span style="font-weight:400; font-size:10px;">(Mån & Tors)</span></div>
-          <div class="freq-btn" onclick="setFreq(this)">3 ggr / vecka<br><span style="font-weight:400; font-size:10px;">(Aktiv koll)</span></div>
+          <div class="freq-btn active" onclick="setFreq(this)">1 ggr/vecka<br><span style="font-weight:400; font-size:10px;">(Söndag)</span></div>
+          <div class="freq-btn" onclick="setFreq(this)">2 ggr/vecka<br><span style="font-weight:400; font-size:10px;">(Mån/Tor)</span></div>
+          <div class="freq-btn" onclick="setFreq(this)">3 ggr/vecka<br><span style="font-weight:400; font-size:10px;">(Aktiv)</span></div>
         </div>
 
-        <label class="field-label">Vart ska din agent leverera råden?</label>
-        <input type="email" placeholder="Din e-postadress..." required>
+        <label class="field-label">Vart ska agenten leverera rapporterna?</label>
+        <input type="email" placeholder="namn@gmail.com" required>
+
+        <!-- NAVIGATION MED BACK-KNAPP -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-back" onclick="nextStep(2)">◀ Bakåt</button>
+          <button type="submit" class="btn btn-next" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Starta Agenten 🚀</button>
+        </div>
       </div>
 
-      <button type="submit" class="btn-submit">Koppla av & Starta Agenten 🚀</button>
     </form>
 
-    <div id="status"></div>
+    <!-- SLUTSKÄRM -->
+    <div id="success-screen">
+      <div class="success-icon">✨</div>
+      <h2>Din agent är redo!</h2>
+      <p class="step-desc" style="margin-bottom: 20px;">
+        Agenten har sparat dina preferenser. Den kommer nu hålla koll på slutpriser, husålder och barnfamiljstäthet i ditt valt område.
+      </p>
+      <button class="btn btn-next" onclick="location.reload()">Ändra mina inställningar</button>
+    </div>
 
   </div>
 </div>
 
 <script>
   let activeMat = true;
-  let activeHus = false;
+  let activeHus = true;
 
   function toggleAgent(type) {
     if (type === 'mat') {
       activeMat = !activeMat;
       document.getElementById('btn-mat').classList.toggle('selected-green', activeMat);
-      document.getElementById('section-mat').style.display = activeMat ? 'block' : 'none';
+      document.getElementById('pref-mat').style.display = activeMat ? 'block' : 'none';
     } else {
       activeHus = !activeHus;
       document.getElementById('btn-hus').classList.toggle('selected-blue', activeHus);
-      document.getElementById('section-hus').style.display = activeHus ? 'block' : 'none';
+      document.getElementById('pref-hus').style.display = activeHus ? 'block' : 'none';
     }
   }
 
@@ -305,10 +304,20 @@
     el.classList.add('active');
   }
 
-  function handleForm(e) {
+  function nextStep(step) {
+    document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + step).classList.add('active');
+    
+    // Uppdatera Progress Bar
+    const progress = (step / 3) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  }
+
+  function finishWizard(e) {
     e.preventDefault();
-    const status = document.getElementById('status');
-    status.innerHTML = "✨ **Klart!** Din agent har registrerat dina preferenser och tar nu över tankearbetet åt dig.";
+    document.getElementById('wizardForm').style.display = 'none';
+    document.getElementById('progress-box').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
   }
 </script>
 
