@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyAgents – Skapa din personliga AI-agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/css/main.css">
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="card">
+    <div class="progress-container" id="progress-box">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <form id="wizardForm">
+      <!-- STEG 1: FÖRKLARING -->
+      <div class="step-content active" id="step-1">
+        <div class="step-number">Steg 1 av 4 – Förstå Agenten</div>
+        <h2>Vad är en AI-agent?</h2>
+        <div class="agent-explainer">
+          <div class="agent-explainer-lead">
+            Till skillnad från vanlig AI är en <strong>AI-agent autonom och målinriktad</strong>.
+          </div>
+          <div class="agent-features">
+            <div class="feature-item"><span class="feature-icon">🧠</span><div class="feature-text"><strong>Minne:</strong> Kommer ihåg dina preferenser.</div></div>
+            <div class="feature-item"><span class="feature-icon">🌐</span><div class="feature-text"><strong>Verktyg:</strong> Kopplar upp sig mot levande datakällor.</div></div>
+            <div class="feature-item"><span class="feature-icon">🎯</span><div class="feature-text"><strong>Planering:</strong> Resonerar och utför uppgifter i flera steg.</div></div>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-next" data-next="2">Börja bygga din agent ➔</button>
+        </div>
+      </div>
+
+      <!-- STEG 2: ROLL -->
+      <div class="step-content" id="step-2">
+        <div class="step-number">Steg 2 av 4 – Agentens roll</div>
+        <h2>Vilken typ av agent vill du ha?</h2>
+        <div class="agent-selector">
+          <div class="select-card selected-green" data-agent="mat"><div class="select-icon">🥦</div><div class="select-title">Mat & Säsong</div></div>
+          <div class="select-card selected-blue" data-agent="hus"><div class="select-icon">🏡</div><div class="select-title">Hus & Boende</div></div>
+          <div class="select-card" data-agent="custom"><div class="select-icon">✨</div><div class="select-title">Egen Agent</div></div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-back" data-next="1">◀ Bakåt</button>
+          <button type="button" class="btn btn-next" data-next="3">Formulera regler ➔</button>
+        </div>
+      </div>
+
+      <!-- STEG 3: INSTRUKTIONER -->
+      <div class="step-content" id="step-3">
+        <div class="step-number">Steg 3 av 4 – Bygg Systemprompten</div>
+        <h2>Formulera dina instruktioner</h2>
+        
+        <div id="pref-mat">
+          <label class="field-label">🥦 Favoritbutik (Verktyg/Datakälla)</label>
+          <select id="select-butik">
+            <option>Stora Coop Vinsta</option>
+            <option>ICA Kvantum Flygstaden</option>
+            <option>Lidl Vällingby</option>
+          </select>
+          <label class="field-label">Mål & Inriktning</label>
+          <div class="chip-group" id="chips-mat-plan">
+            <div class="chip active">Middagar</div>
+            <div class="chip active">Matlåda till jobbet</div>
+          </div>
+        </div>
+
+        <div id="pref-custom" style="display:none;">
+          <label class="field-label">1. Roll & Mål</label>
+          <input type="text" id="custom-role" placeholder="T.ex. Min personliga träningscoach">
+          <label class="field-label">2. Minne & Preferenser</label>
+          <input type="text" id="custom-memory" placeholder="T.ex. Vill träna 3 ggr/vecka">
+          <label class="field-label">3. Omvärld & Verktyg</label>
+          <input type="text" id="custom-focus" placeholder="T.ex. Veckans väderprognos">
+          <label class="field-label">4. Planering & Regler</label>
+          <textarea id="custom-rules" placeholder="T.ex. Ge korta punktlistor varje söndag"></textarea>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-back" data-next="2">◀ Bakåt</button>
+          <button type="button" class="btn btn-next" data-next="4">Se genererad prompt ➔</button>
+        </div>
+      </div>
+
+      <!-- STEG 4: GRANSKA & NAMNGE -->
+      <div class="step-content" id="step-4">
+        <div class="step-number">Steg 4 av 4 – Namnge & Aktivera</div>
+        <h2>Din skräddarsydda Systemprompt</h2>
+        <div class="prompt-box" id="prompt-preview"></div>
+        <button type="button" class="btn-copy" id="btn-copy">📋 Kopiera Systemprompt</button>
+
+        <label class="field-label" style="margin-top:16px; color:var(--accent-purple);">🤖 Vad vill du att din personliga agent ska heta?</label>
+        <input type="text" id="agent-name" placeholder="T.ex. Alfred, Jarvis eller Vällingby-Boten" required style="border: 2px solid var(--accent-purple);">
+
+        <label class="field-label">Din e-postadress</label>
+        <input type="email" id="user-email" placeholder="namn@gmail.com" required>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-back" data-next="3">◀ Bakåt</button>
+          <button type="submit" class="btn btn-next" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Starta Agenten 🚀</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="success-screen" style="display:none; text-align:center;">
+      <div class="success-icon">🤖</div>
+      <h2 id="success-title">Din agent är aktiverad!</h2>
+      <p class="step-desc">Agenten är nu namngiven och redo att köras i bakgrunden.</p>
+      <button class="btn btn-next" onclick="location.reload()">Bygg en ny agent</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="../src/js/app.js"></script>
+</body>
+</html>
